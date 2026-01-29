@@ -11,7 +11,7 @@ dependencies = [
     "httpx>=0.25.0,<1.0.0",
 ]
 name = "langchain-cloro"
-version = "0.1.0"
+version = "0.2.1"
 description = "An integration package connecting Cloro.dev and LangChain"
 readme = "README.md"
 
@@ -30,6 +30,7 @@ test = [
     "pytest-asyncio>=0.21.1,<1.0.0",
     "freezegun>=1.2.2,<2.0.0",
     "langchain-core",
+    "langchain-tests",
 ]
 lint = ["ruff>=0.13.1,<0.14.0"]
 dev = ["langchain-core"]

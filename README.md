@@ -1,6 +1,6 @@
 # langchain-cloro
 
-This package contains the LangChain integration for [Cloro.dev](https://cloro.dev).
+This package contains the LangChain integration for [cloro.dev](https://cloro.dev) - a unified API for monitoring multiple AI providers including Google Search, ChatGPT, Gemini, Perplexity, Grok, and Microsoft Copilot.
 
 ## Installation
 
@@ -10,7 +10,7 @@ pip install langchain-cloro
 
 ## Setup
 
-You'll need a Cloro API key. Get one at [https://cloro.dev](https://cloro.dev).
+You'll need a cloro API key. Get one at [https://cloro.dev](https://cloro.dev).
 
 Set the API key as an environment variable:
 
@@ -21,25 +21,183 @@ export CLORO_API_KEY="your-api-key-here"
 Or pass it directly when initializing:
 
 ```python
-from langchain_cloro import CloroSearchRun
+from langchain_cloro import CloroGoogleSearch
 
-tool = CloroSearchRun(cloro_api_key="your-api-key-here")
+tool = CloroGoogleSearch(cloro_api_key="your-api-key-here")
 ```
 
-## Usage
+## Available Tools
+
+### CloroGoogleSearch
+
+Extract structured data from Google Search results, including organic results, People Also Ask questions, related searches, and optional AI Overview data.
+
+```python
+from langchain_cloro import CloroGoogleSearch
+
+tool = CloroGoogleSearch()
+
+# Basic search
+results = tool.invoke({"query": "best laptops for programming"})
+
+# With AI Overview
+results = tool.invoke({
+    "query": "best laptops for programming",
+    "include_aioverview": True,
+    "aioverview_markdown": True
+})
+
+# Multiple pages
+results = tool.invoke({
+    "query": "python tutorials",
+    "pages": 3,
+    "country": "US",
+    "device": "desktop"
+})
+```
+
+**Parameters:**
+- `query` (str, required): The search query
+- `country` (str): ISO 3166-1 alpha-2 country code. Default: "US"
+- `device` (str): "desktop" or "mobile". Default: "desktop"
+- `pages` (int): Number of pages to scrape (1-20). Default: 1
+- `include_aioverview` (bool): Include Google AI Overview. Default: False
+- `aioverview_markdown` (bool): Format AI Overview as markdown. Default: False
+- `include_html` (bool): Include raw HTML response. Default: False
+
+### CloroChatGPT
+
+Extract structured data from ChatGPT with shopping cards, entity extraction, and advanced features for monitoring products, prices, and brand mentions.
+
+```python
+from langchain_cloro import CloroChatGPT
+
+tool = CloroChatGPT()
+
+# Basic query
+results = tool.invoke({"prompt": "What are the best sneakers under $100?"})
+
+# With shopping card data
+results = tool.invoke({
+    "prompt": "best running shoes",
+    "include_raw_response": True,
+    "include_search_queries": True
+})
+```
+
+**Parameters:**
+- `prompt` (str, required): The prompt/query
+- `country` (str): ISO 3166-1 alpha-2 country code. Default: "US"
+- `include_raw_response` (bool): Include raw streaming response events. Default: False
+- `include_search_queries` (bool): Include search fan-out queries. Default: False
+- `include_html` (bool): Include HTML response. Default: False
+- `include_markdown` (bool): Include markdown response. Default: False
+
+### CloroGemini
+
+Extract structured data from Google's Gemini AI with source citations, confidence levels, and multiple output formats.
+
+```python
+from langchain_cloro import CloroGemini
+
+tool = CloroGemini()
+
+results = tool.invoke({"prompt": "Explain quantum entanglement"})
+```
+
+**Parameters:**
+- `prompt` (str, required): The prompt/query
+- `country` (str): ISO 3166-1 alpha-2 country code. Default: "US"
+- `include_html` (bool): Include HTML response. Default: False
+- `include_markdown` (bool): Include markdown response. Default: False
+
+### CloroPerplexity
+
+Extract comprehensive structured data from Perplexity AI with real-time web sources, shopping products, media content, and travel information.
+
+```python
+from langchain_cloro import CloroPerplexity
+
+tool = CloroPerplexity()
+
+# Travel query
+results = tool.invoke({"prompt": "Best hotels in San Francisco"})
+
+# Shopping query
+results = tool.invoke({"prompt": "best noise-cancelling headphones"})
+```
+
+**Parameters:**
+- `prompt` (str, required): The prompt/query
+- `country` (str): ISO 3166-1 alpha-2 country code. Default: "US"
+- `include_html` (bool): Include HTML response. Default: False
+- `include_markdown` (bool): Include markdown response. Default: False
+
+### CloroGrok
+
+Extract comprehensive structured data from Grok with real-time web sources and enhanced source metadata including preview text, creator details, and images.
+
+```python
+from langchain_cloro import CloroGrok
+
+tool = CloroGrok()
+
+results = tool.invoke({"prompt": "Latest news about AI"})
+```
+
+**Parameters:**
+- `prompt` (str, required): The prompt/query
+- `country` (str): ISO 3166-1 alpha-2 country code. Default: "US"
+- `include_html` (bool): Include HTML response. Default: False
+- `include_markdown` (bool): Include markdown response. Default: False
+
+### CloroCopilot
+
+Extract structured data from Microsoft Copilot with source citations.
+
+```python
+from langchain_cloro import CloroCopilot
+
+tool = CloroCopilot()
+
+results = tool.invoke({"prompt": "What is the capital of France?"})
+```
+
+**Parameters:**
+- `prompt` (str, required): The prompt/query
+- `country` (str): ISO 3166-1 alpha-2 country code. Default: "US"
+- `include_html` (bool): Include HTML response. Default: False
+- `include_markdown` (bool): Include markdown response. Default: False
+
+### get_countries Utility
+
+Get list of supported country codes for specific AI providers.
+
+```python
+from langchain_cloro import get_countries
+
+# Get all countries
+all_countries = get_countries()
+
+# Get countries for specific model
+chatgpt_countries = get_countries(model="chatgpt")
+google_countries = get_countries(model="google")
+```
+
+## Usage with LangChain Agents
 
 ### With an Agent
 
 ```python
 from langchain.agents import initialize_agent, AgentType
 from langchain_openai import OpenAI
-from langchain_cloro import CloroSearchRun
+from langchain_cloro import CloroGoogleSearch, CloroChatGPT
 
 llm = OpenAI(temperature=0)
-search = CloroSearchRun()
+tools = [CloroGoogleSearch(), CloroChatGPT()]
 
 agent = initialize_agent(
-    [search],
+    tools,
     llm,
     agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
     verbose=True,
@@ -48,40 +206,23 @@ agent = initialize_agent(
 agent.run("What are the latest developments in AI?")
 ```
 
-### Direct Tool Usage
-
-```python
-from langchain_cloro import CloroSearchRun
-
-tool = CloroSearchRun()
-
-# Simple search
-results = tool.invoke({"query": "Python programming tips"})
-
-# Search with custom parameters
-results = tool.invoke({
-    "query": "machine learning tutorials",
-    "num_results": 5,
-})
-```
-
 ### With LCEL
 
 ```python
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
-from langchain_cloro import CloroSearchRun
+from langchain_cloro import CloroChatGPT
 
-search = CloroSearchRun()
+chatgpt = CloroChatGPT()
 
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "Answer the question based on the search results:\n\n{results}"),
+    ("system", "Answer based on the AI's response:\n\n{response}"),
     ("user", "{question}")
 ])
 
 chain = {
-    "results": lambda x: search.invoke({"query": x["question"]}),
+    "response": lambda x: chatgpt.invoke({"prompt": x["question"]}),
     "question": lambda x: x["question"]
 } | prompt | ChatOpenAI() | StrOutputParser()
 
@@ -89,37 +230,42 @@ response = chain.invoke({"question": "What is LangChain?"})
 print(response)
 ```
 
-## API Reference
-
-### CloroSearchRun
-
-Main search tool for Cloro.dev API.
-
-**Parameters:**
-- `cloro_api_key` (str, optional): Cloro API key. Defaults to `CLORO_API_KEY` environment variable.
-- `timeout` (float, optional): Request timeout in seconds. Defaults to 10.0.
-
-**Methods:**
-
-##### `_run`
-
-Execute a search query.
+### Multiple Tools Example
 
 ```python
-_run(
-    query: str,
-    num_results: int = 10,
-    **kwargs: dict
-) -> str
+from langchain_cloro import (
+    CloroGoogleSearch,
+    CloroChatGPT,
+    CloroGemini,
+    CloroPerplexity,
+    CloroGrok,
+    CloroCopilot
+)
+
+tools = [
+    CloroGoogleSearch(),  # For search queries
+    CloroChatGPT(),      # For shopping/product queries
+    CloroGemini(),       # For general AI queries
+    CloroPerplexity(),   # For research with citations
+    CloroGrok(),         # For real-time news
+    CloroCopilot(),      # For general queries
+]
 ```
 
-**Parameters:**
-- `query` (str): The search query string.
-- `num_results` (int): Number of results to return. Default: 10.
-- `**kwargs`: Additional search parameters to pass to the Cloro API.
+## Supported Country Codes
 
-**Returns:**
-- `str`: JSON string of search results.
+Use the `get_countries()` utility to fetch supported countries:
+
+```python
+from langchain_cloro import get_countries
+
+# Check which countries are available for each model
+models = ["google", "chatgpt", "gemini", "perplexity", "grok", "copilot"]
+
+for model in models:
+    countries = get_countries(model=model)
+    print(f"{model}: {len(countries)} countries")
+```
 
 ## Development
 
@@ -127,17 +273,19 @@ _run(
 
 ```bash
 # Unit tests
-pytest tests/unit_tests
+pytest tests/unit_tests -v
 
 # Linting
 ruff check .
 ruff format .
+
+# Type checking
+mypy langchain_cloro
 ```
 
-## Contributing
+## API Reference
 
-This package follows LangChain's contribution guidelines. See:
-- [LangChain Contributing Guide](https://docs.langchain.com/oss/python/contributing/overview)
+For detailed API documentation, see [https://docs.cloro.dev](https://docs.cloro.dev).
 
 ## License
 
@@ -147,4 +295,4 @@ MIT
 
 - Documentation: [https://docs.cloro.dev](https://docs.cloro.dev)
 - Source: [https://github.com/cloro-dev/langchain-cloro](https://github.com/cloro-dev/langchain-cloro)
-- Cloro API: [https://cloro.dev](https://cloro.dev)
+- cloro API: [https://cloro.dev](https://cloro.dev)
