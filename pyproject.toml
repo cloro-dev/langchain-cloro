@@ -11,8 +11,8 @@ dependencies = [
     "httpx>=0.25.0,<1.0.0",
 ]
 name = "langchain-cloro"
-version = "0.2.1"
-description = "An integration package connecting Cloro.dev and LangChain"
+version = "0.2.2"
+description = "An integration package connecting cloro.dev and LangChain"
 readme = "README.md"
 
 [project.urls]

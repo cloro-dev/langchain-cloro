@@ -1,6 +1,6 @@
 # langchain-cloro
 
-This package contains the LangChain integration for [cloro.dev](https://cloro.dev) - a unified API for monitoring multiple AI providers including Google Search, ChatGPT, Gemini, Perplexity, Grok, and Microsoft Copilot.
+This package contains the LangChain integration for [cloro.dev](https://cloro.dev/) - a unified API for monitoring multiple AI providers including Google Search, ChatGPT, Gemini, Perplexity, Grok, and Microsoft Copilot.
 
 ## Installation
 
@@ -10,7 +10,7 @@ pip install langchain-cloro
 
 ## Setup
 
-You'll need a cloro API key. Get one at [https://cloro.dev](https://cloro.dev).
+You'll need a cloro API key. Get one at [https://cloro.dev](https://cloro.dev/).
 
 Set the API key as an environment variable:
 
@@ -285,7 +285,7 @@ mypy langchain_cloro
 
 ## API Reference
 
-For detailed API documentation, see [https://docs.cloro.dev](https://docs.cloro.dev).
+For detailed API documentation, see [https://docs.cloro.dev](https://docs.cloro.dev/).
 
 ## License
 
@@ -293,6 +293,6 @@ MIT
 
 ## Links
 
-- Documentation: [https://docs.cloro.dev](https://docs.cloro.dev)
+- Documentation: [https://docs.cloro.dev](https://docs.cloro.dev/)
 - Source: [https://github.com/cloro-dev/langchain-cloro](https://github.com/cloro-dev/langchain-cloro)
-- cloro API: [https://cloro.dev](https://cloro.dev)
+- cloro API: [https://cloro.dev](https://cloro.dev/)
