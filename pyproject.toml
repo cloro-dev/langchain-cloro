@@ -16,8 +16,8 @@ description = "An integration package connecting cloro.dev and LangChain"
 readme = "README.md"
 
 [project.urls]
-Homepage = "https://docs.cloro.dev"
-Documentation = "https://docs.cloro.dev"
+Homepage = "https://cloro.dev"
+Documentation = "https://cloro.dev/docs"
 Source = "https://github.com/cloro-dev/langchain-cloro"
 Changelog = "https://github.com/cloro-dev/langchain-cloro/releases"
 Repository = "https://github.com/cloro-dev/langchain-cloro"

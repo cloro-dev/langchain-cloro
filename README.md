@@ -285,7 +285,7 @@ mypy langchain_cloro
 
 ## API Reference
 
-For detailed API documentation, see [https://docs.cloro.dev](https://docs.cloro.dev/).
+For detailed API documentation, see [https://cloro.dev/docs](https://cloro.dev/docs/).
 
 ## License
 
@@ -293,6 +293,6 @@ MIT
 
 ## Links
 
-- Documentation: [https://docs.cloro.dev](https://docs.cloro.dev/)
+- Documentation: [https://cloro.dev/docs](https://cloro.dev/docs/)
 - Source: [https://github.com/cloro-dev/langchain-cloro](https://github.com/cloro-dev/langchain-cloro)
 - cloro API: [https://cloro.dev](https://cloro.dev/)
