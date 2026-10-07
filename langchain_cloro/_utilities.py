@@ -21,14 +21,13 @@ def initialize_client(values: dict, *, timeout: float | None = None) -> dict:
     values["cloro_api_key"] = convert_to_secret_str(cloro_api_key)
 
     # Initialize httpx client with appropriate settings
-    # No timeout by default - requests will wait indefinitely
     values["client"] = httpx.Client(
         base_url="https://api.cloro.dev",
         headers={
             "Authorization": f"Bearer {values['cloro_api_key'].get_secret_value()}",
             "Content-Type": "application/json",
         },
-        timeout=None,
+        timeout=timeout,
     )
     return values
 
@@ -74,7 +73,7 @@ def build_google_search_params(
         query: The search query string.
         country: ISO 3166-1 alpha-2 country code. Default: "US"
         device: Device type (desktop or mobile). Default: "desktop"
-        pages: Number of pages to scrape (1-20). Default: 1
+        pages: Number of pages to scrape (1-10). Default: 1
         include: Optional flags for additional response formats.
         **kwargs: Additional parameters to pass to the API.
 

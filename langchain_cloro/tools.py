@@ -28,7 +28,7 @@ class _CloroBaseTool(BaseTool):
     @classmethod
     def validate_environment(cls, values: dict) -> Any:
         """Validate the environment and initialize the client."""
-        return initialize_client(values, timeout=values.get("timeout", 10.0))
+        return initialize_client(values, timeout=values.get("timeout"))
 
     def _make_request(
         self, endpoint: str, params: dict[str, Any]
@@ -116,7 +116,7 @@ class CloroGoogleSearch(_CloroBaseTool):
             query: The search query string.
             country: ISO 3166-1 alpha-2 country code. Default: "US"
             device: Device type (desktop or mobile). Default: "desktop"
-            pages: Number of pages to scrape (1-20). Default: 1
+            pages: Number of pages to scrape (1-10). Default: 1
             include_aioverview: Include Google AI Overview. Default: False
             aioverview_markdown: Format AI Overview as markdown. Default: False
             include_html: Include raw HTML response. Default: False
