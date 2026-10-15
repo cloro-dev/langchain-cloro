@@ -16,7 +16,6 @@ from langchain_cloro import (
     CloroChatGPT,
     CloroCopilot,
     CloroGemini,
-    CloroGrok,
     CloroGoogleSearch,
     CloroPerplexity,
 )
@@ -125,38 +124,6 @@ class TestCloroPerplexityStandard(ToolsUnitTests):
     def tool_constructor(self) -> type[CloroPerplexity]:
         """Return the CloroPerplexity tool class."""
         return CloroPerplexity
-
-    @property
-    def tool_constructor_params(self) -> dict[str, Any]:
-        """Return parameters for tool construction."""
-        return {
-            "cloro_api_key": "test-api-key",
-        }
-
-    @property
-    def tool_invoke_params_example(self) -> dict[str, Any]:
-        """Return example parameters for tool invocation."""
-        return {"prompt": "test prompt"}
-
-    @property
-    def init_from_env_params(
-        self,
-    ) -> tuple[dict[str, str], dict[str, Any], dict[str, Any]]:
-        """Return params for environment variable initialization test."""
-        return (
-            {"CLORO_API_KEY": "env-api-key"},
-            {},
-            {"cloro_api_key": "env-api-key"},
-        )
-
-
-class TestCloroGrokStandard(ToolsUnitTests):
-    """LangChain standard tests for CloroGrok."""
-
-    @property
-    def tool_constructor(self) -> type[CloroGrok]:
-        """Return the CloroGrok tool class."""
-        return CloroGrok
 
     @property
     def tool_constructor_params(self) -> dict[str, Any]:

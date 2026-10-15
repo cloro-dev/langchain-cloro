@@ -1,6 +1,10 @@
 # langchain-cloro
 
-This package contains the LangChain integration for [cloro.dev](https://cloro.dev/) - a unified API for monitoring multiple AI providers including Google Search, ChatGPT, Gemini, Perplexity, Grok, and Microsoft Copilot.
+This package contains the LangChain integration for [cloro.dev](https://cloro.dev/) - a unified API for monitoring multiple AI providers including Google Search, ChatGPT, Gemini, Perplexity, and Microsoft Copilot.
+
+> **Perplexity is temporarily unavailable.** The cloro API rejects requests to
+> it with a `400` (`MODEL_UNAVAILABLE`). These requests cost no credits. The
+> [changelog](https://cloro.dev/docs/changelog) will say when it is back.
 
 ## Installation
 
@@ -133,24 +137,6 @@ results = tool.invoke({"prompt": "best noise-cancelling headphones"})
 - `include_html` (bool): Include HTML response. Default: False
 - `include_markdown` (bool): Include markdown response. Default: False
 
-### CloroGrok
-
-Extract comprehensive structured data from Grok with real-time web sources and enhanced source metadata including preview text, creator details, and images.
-
-```python
-from langchain_cloro import CloroGrok
-
-tool = CloroGrok()
-
-results = tool.invoke({"prompt": "Latest news about AI"})
-```
-
-**Parameters:**
-- `prompt` (str, required): The prompt/query
-- `country` (str): ISO 3166-1 alpha-2 country code. Default: "US"
-- `include_html` (bool): Include HTML response. Default: False
-- `include_markdown` (bool): Include markdown response. Default: False
-
 ### CloroCopilot
 
 Extract structured data from Microsoft Copilot with source citations.
@@ -238,7 +224,6 @@ from langchain_cloro import (
     CloroChatGPT,
     CloroGemini,
     CloroPerplexity,
-    CloroGrok,
     CloroCopilot
 )
 
@@ -247,7 +232,6 @@ tools = [
     CloroChatGPT(),      # For shopping/product queries
     CloroGemini(),       # For general AI queries
     CloroPerplexity(),   # For research with citations
-    CloroGrok(),         # For real-time news
     CloroCopilot(),      # For general queries
 ]
 ```
@@ -260,7 +244,7 @@ Use the `get_countries()` utility to fetch supported countries:
 from langchain_cloro import get_countries
 
 # Check which countries are available for each model
-models = ["google", "chatgpt", "gemini", "perplexity", "grok", "copilot"]
+models = ["google", "chatgpt", "gemini", "perplexity", "copilot"]
 
 for model in models:
     countries = get_countries(model=model)

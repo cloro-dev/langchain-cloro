@@ -25,7 +25,6 @@ from langchain_cloro import (
     CloroChatGPT,
     CloroCopilot,
     CloroGemini,
-    CloroGrok,
     CloroGoogleSearch,
     CloroPerplexity,
 )
@@ -117,28 +116,6 @@ class TestCloroPerplexityIntegration(ToolsIntegrationTests):
     def tool_invoke_params_example(self) -> dict[str, Any]:
         """Return example parameters for tool invocation."""
         return {"prompt": "Best hotels in San Francisco"}
-
-
-class TestCloroGrokIntegration(ToolsIntegrationTests):
-    """LangChain integration tests for CloroGrok."""
-
-    @property
-    def tool_constructor(self) -> type[CloroGrok]:
-        """Return the CloroGrok tool class."""
-        return CloroGrok
-
-    @property
-    def tool_constructor_params(self) -> dict[str, Any]:
-        """Return parameters for tool construction.
-
-        Uses CLORO_API_KEY from environment variable.
-        """
-        return {}
-
-    @property
-    def tool_invoke_params_example(self) -> dict[str, Any]:
-        """Return example parameters for tool invocation."""
-        return {"prompt": "Latest news about AI"}
 
 
 class TestCloroCopilotIntegration(ToolsIntegrationTests):
