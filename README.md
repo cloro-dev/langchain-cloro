@@ -2,10 +2,6 @@
 
 This package contains the LangChain integration for [cloro.dev](https://cloro.dev/) - a unified API for monitoring multiple AI providers including Google Search, ChatGPT, Gemini, Perplexity, and Microsoft Copilot.
 
-> **Perplexity is temporarily unavailable.** The cloro API rejects requests to
-> it with a `400` (`MODEL_UNAVAILABLE`). These requests cost no credits. The
-> [changelog](https://cloro.dev/docs/changelog) will say when it is back.
-
 ## Installation
 
 ```bash
