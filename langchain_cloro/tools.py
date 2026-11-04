@@ -230,8 +230,8 @@ class CloroChatGPT(_CloroBaseTool):
 class CloroGemini(_CloroBaseTool):
     r"""cloro Google Gemini monitoring tool.
 
-    Extracts structured data from Google's Gemini AI with source citations,
-    confidence levels, and multiple output formats.
+    Extracts structured data from Google's Gemini AI with source citations
+    and multiple output formats.
 
     Setup:
         Install ``langchain-cloro`` and set environment variable ``CLORO_API_KEY``.
@@ -257,8 +257,8 @@ class CloroGemini(_CloroBaseTool):
     name: str = "cloro_gemini"
     description: str = (
         "A wrapper around cloro Google Gemini API. "
-        "Extracts structured data from Gemini with source citations and "
-        "confidence levels. Input should be a prompt. "
+        "Extracts structured data from Gemini with source citations. "
+        "Input should be a prompt. "
         "Output is a JSON object with the response and sources."
     )
 
