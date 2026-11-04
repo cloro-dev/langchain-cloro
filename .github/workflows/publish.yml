@@ -1,0 +1,46 @@
+# Publishes the package to PyPI when a version tag (v0.3.1, v1.0.0) is pushed.
+#
+# PyPI Trusted Publishing gives the job a short-lived OIDC token. No API
+# token is stored. Before the first tag, add a Trusted Publisher on
+# https://pypi.org/manage/project/langchain-cloro/settings/publishing/ with:
+#   owner: cloro-dev, repository: langchain-cloro, workflow: publish.yml
+#
+# The tag must agree with `version` in pyproject.toml.
+
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    permissions:
+      # Required to get the OIDC token for Trusted Publishing.
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Check that the tag agrees with the package version
+        run: |
+          version=$(uv version --short)
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not agree with version $version in pyproject.toml"
+            exit 1
+          fi
+
+      - name: Run unit tests
+        run: uv run --group test pytest tests/unit_tests
+
+      - name: Build
+        run: uv build
+
+      - name: Publish to PyPI
+        run: uv publish --trusted-publishing always

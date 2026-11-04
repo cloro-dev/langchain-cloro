@@ -263,6 +263,18 @@ ruff format .
 mypy langchain_cloro
 ```
 
+### Release
+
+The [Publish workflow](.github/workflows/publish.yml) publishes the package to PyPI when a version tag is pushed. It uses PyPI Trusted Publishing, so you do not need a PyPI token.
+
+1. Increase `version` in `pyproject.toml` and commit the change.
+2. Tag the commit with the same version and push the commit and the tag. The workflow runs the unit tests, builds and publishes:
+
+   ```bash
+   git tag v0.3.2
+   git push origin main v0.3.2
+   ```
+
 ## API Reference
 
 For detailed API documentation, see [https://cloro.dev/docs](https://cloro.dev/docs/).
