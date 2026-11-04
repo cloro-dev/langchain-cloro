@@ -60,7 +60,7 @@ results = tool.invoke({
 - `query` (str, required): The search query
 - `country` (str): ISO 3166-1 alpha-2 country code. Default: "US"
 - `device` (str): "desktop" or "mobile". Default: "desktop"
-- `pages` (int): Number of pages to scrape (1-20). Default: 1
+- `pages` (int): Number of pages to scrape (1-10). Default: 1
 - `include_aioverview` (bool): Include Google AI Overview. Default: False
 - `aioverview_markdown` (bool): Format AI Overview as markdown. Default: False
 - `include_html` (bool): Include raw HTML response. Default: False
@@ -95,7 +95,7 @@ results = tool.invoke({
 
 ### CloroGemini
 
-Extract structured data from Google's Gemini AI with source citations, confidence levels, and multiple output formats.
+Extract structured data from Google's Gemini AI with source citations and multiple output formats.
 
 ```python
 from langchain_cloro import CloroGemini
