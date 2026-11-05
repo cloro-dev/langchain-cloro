@@ -12,7 +12,7 @@ def get_countries(
 
     Args:
         cloro_api_key: The cloro API key. If not provided, uses CLORO_API_KEY env variable.
-        model: Optional model name to filter countries (e.g., 'chatgpt', 'google', 'perplexity').
+        model: Optional model name to filter countries (e.g., 'chatgpt', 'google', 'gemini').
         timeout: Request timeout in seconds. Default: None (no timeout)
 
     Returns:

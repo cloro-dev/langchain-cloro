@@ -1,6 +1,6 @@
 # langchain-cloro
 
-This package contains the LangChain integration for [cloro.dev](https://cloro.dev/) - a unified API for monitoring multiple AI providers including Google Search, ChatGPT, Gemini, Perplexity, and Microsoft Copilot.
+This package contains the LangChain integration for [cloro.dev](https://cloro.dev/) - a unified API for monitoring multiple AI providers including Google Search, ChatGPT, and Gemini.
 
 ## Installation
 
@@ -111,46 +111,6 @@ results = tool.invoke({"prompt": "Explain quantum entanglement"})
 - `include_html` (bool): Include HTML response. Default: False
 - `include_markdown` (bool): Include markdown response. Default: False
 
-### CloroPerplexity
-
-Extract comprehensive structured data from Perplexity AI with real-time web sources, shopping products, media content, and travel information.
-
-```python
-from langchain_cloro import CloroPerplexity
-
-tool = CloroPerplexity()
-
-# Travel query
-results = tool.invoke({"prompt": "Best hotels in San Francisco"})
-
-# Shopping query
-results = tool.invoke({"prompt": "best noise-cancelling headphones"})
-```
-
-**Parameters:**
-- `prompt` (str, required): The prompt/query
-- `country` (str): ISO 3166-1 alpha-2 country code. Default: "US"
-- `include_html` (bool): Include HTML response. Default: False
-- `include_markdown` (bool): Include markdown response. Default: False
-
-### CloroCopilot
-
-Extract structured data from Microsoft Copilot with source citations.
-
-```python
-from langchain_cloro import CloroCopilot
-
-tool = CloroCopilot()
-
-results = tool.invoke({"prompt": "What is the capital of France?"})
-```
-
-**Parameters:**
-- `prompt` (str, required): The prompt/query
-- `country` (str): ISO 3166-1 alpha-2 country code. Default: "US"
-- `include_html` (bool): Include HTML response. Default: False
-- `include_markdown` (bool): Include markdown response. Default: False
-
 ### get_countries Utility
 
 Get list of supported country codes for specific AI providers.
@@ -219,16 +179,12 @@ from langchain_cloro import (
     CloroGoogleSearch,
     CloroChatGPT,
     CloroGemini,
-    CloroPerplexity,
-    CloroCopilot
 )
 
 tools = [
     CloroGoogleSearch(),  # For search queries
     CloroChatGPT(),      # For shopping/product queries
     CloroGemini(),       # For general AI queries
-    CloroPerplexity(),   # For research with citations
-    CloroCopilot(),      # For general queries
 ]
 ```
 
@@ -240,7 +196,7 @@ Use the `get_countries()` utility to fetch supported countries:
 from langchain_cloro import get_countries
 
 # Check which countries are available for each model
-models = ["google", "chatgpt", "gemini", "perplexity", "copilot"]
+models = ["google", "chatgpt", "gemini"]
 
 for model in models:
     countries = get_countries(model=model)

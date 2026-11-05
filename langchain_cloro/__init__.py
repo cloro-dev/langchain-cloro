@@ -2,10 +2,8 @@
 
 from langchain_cloro.tools import (
     CloroChatGPT,
-    CloroCopilot,
     CloroGemini,
     CloroGoogleSearch,
-    CloroPerplexity,
     CloroSearchResults,
     CloroSearchRun,
 )
@@ -15,8 +13,6 @@ __all__ = [
     "CloroGoogleSearch",
     "CloroChatGPT",
     "CloroGemini",
-    "CloroPerplexity",
-    "CloroCopilot",
     "CloroSearchRun",
     "CloroSearchResults",
     "get_countries",
