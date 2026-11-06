@@ -5,10 +5,8 @@ from unittest.mock import MagicMock, patch
 import pytest
 from langchain_cloro.tools import (
     CloroChatGPT,
-    CloroCopilot,
     CloroGemini,
     CloroGoogleSearch,
-    CloroPerplexity,
 )
 
 
@@ -148,56 +146,6 @@ class TestCloroGemini:
 
         call_args = mock_client.post.call_args
         assert call_args[0][0] == "/v1/monitor/gemini"
-        assert call_args[1]["json"]["prompt"] == "test prompt"
-
-
-class TestCloroPerplexity:
-    """Test CloroPerplexity tool."""
-
-    @patch("langchain_cloro.tools.initialize_client")
-    def test_run_success(self, mock_init: MagicMock) -> None:
-        """Test successful Perplexity execution."""
-        mock_client = MagicMock()
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"success": True, "result": {"text": "Response"}}
-        mock_response.raise_for_status = MagicMock()
-        mock_client.post.return_value = mock_response
-
-        mock_init.return_value = {
-            "cloro_api_key": "test-key",
-            "client": mock_client,
-        }
-
-        tool = CloroPerplexity(cloro_api_key="test-api-key")
-        result = tool._run(prompt="test prompt")
-
-        call_args = mock_client.post.call_args
-        assert call_args[0][0] == "/v1/monitor/perplexity"
-        assert call_args[1]["json"]["prompt"] == "test prompt"
-
-
-class TestCloroCopilot:
-    """Test CloroCopilot tool."""
-
-    @patch("langchain_cloro.tools.initialize_client")
-    def test_run_success(self, mock_init: MagicMock) -> None:
-        """Test successful Copilot execution."""
-        mock_client = MagicMock()
-        mock_response = MagicMock()
-        mock_response.json.return_value = {"success": True, "result": {"text": "Response"}}
-        mock_response.raise_for_status = MagicMock()
-        mock_client.post.return_value = mock_response
-
-        mock_init.return_value = {
-            "cloro_api_key": "test-key",
-            "client": mock_client,
-        }
-
-        tool = CloroCopilot(cloro_api_key="test-api-key")
-        result = tool._run(prompt="test prompt")
-
-        call_args = mock_client.post.call_args
-        assert call_args[0][0] == "/v1/monitor/copilot"
         assert call_args[1]["json"]["prompt"] == "test prompt"
 
 

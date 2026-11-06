@@ -23,10 +23,8 @@ from langchain_tests.integration_tests import ToolsIntegrationTests
 
 from langchain_cloro import (
     CloroChatGPT,
-    CloroCopilot,
     CloroGemini,
     CloroGoogleSearch,
-    CloroPerplexity,
 )
 
 
@@ -94,47 +92,3 @@ class TestCloroGeminiIntegration(ToolsIntegrationTests):
     def tool_invoke_params_example(self) -> dict[str, Any]:
         """Return example parameters for tool invocation."""
         return {"prompt": "Explain quantum entanglement"}
-
-
-class TestCloroPerplexityIntegration(ToolsIntegrationTests):
-    """LangChain integration tests for CloroPerplexity."""
-
-    @property
-    def tool_constructor(self) -> type[CloroPerplexity]:
-        """Return the CloroPerplexity tool class."""
-        return CloroPerplexity
-
-    @property
-    def tool_constructor_params(self) -> dict[str, Any]:
-        """Return parameters for tool construction.
-
-        Uses CLORO_API_KEY from environment variable.
-        """
-        return {}
-
-    @property
-    def tool_invoke_params_example(self) -> dict[str, Any]:
-        """Return example parameters for tool invocation."""
-        return {"prompt": "Best hotels in San Francisco"}
-
-
-class TestCloroCopilotIntegration(ToolsIntegrationTests):
-    """LangChain integration tests for CloroCopilot."""
-
-    @property
-    def tool_constructor(self) -> type[CloroCopilot]:
-        """Return the CloroCopilot tool class."""
-        return CloroCopilot
-
-    @property
-    def tool_constructor_params(self) -> dict[str, Any]:
-        """Return parameters for tool construction.
-
-        Uses CLORO_API_KEY from environment variable.
-        """
-        return {}
-
-    @property
-    def tool_invoke_params_example(self) -> dict[str, Any]:
-        """Return example parameters for tool invocation."""
-        return {"prompt": "What is the capital of France?"}
