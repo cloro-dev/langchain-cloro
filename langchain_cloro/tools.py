@@ -300,6 +300,86 @@ class CloroGemini(_CloroBaseTool):
         return self._make_request("/v1/monitor/gemini", params)
 
 
+class CloroBingAIMode(_CloroBaseTool):
+    r"""cloro Bing AI Mode monitoring tool.
+
+    Gets the answer that Bing AI Mode gives to a prompt, with its sources
+    and inline citation pills.
+
+    Setup:
+        Install ``langchain-cloro`` and set environment variable ``CLORO_API_KEY``.
+
+        .. code-block:: bash
+
+            pip install -U langchain-cloro
+            export CLORO_API_KEY="your-api-key"
+
+    Instantiation:
+        .. code-block:: python
+
+            from langchain_cloro import CloroBingAIMode
+
+            tool = CloroBingAIMode()
+
+    Invocation:
+        .. code-block:: python
+
+            tool.invoke({"prompt": "What are the best project management tools?"})
+    """
+
+    name: str = "cloro_bing_aimode"
+    description: str = (
+        "A wrapper around cloro Bing AI Mode API. "
+        "Gets the answer that Bing AI Mode gives to a prompt, with its sources "
+        "and citation pills. "
+        "Input should be a prompt. "
+        "Output is a JSON object with the response and sources."
+    )
+
+    def _run(
+        self,
+        prompt: str,
+        country: str = "US",
+        state: str | None = None,
+        include_html: bool = False,
+        include_markdown: bool = False,
+        run_manager: CallbackManagerForToolRun | None = None,
+        **kwargs: Any,
+    ) -> str:
+        """Use the cloro Bing AI Mode tool.
+
+        Args:
+            prompt: The prompt string. Max 3,500 characters after URL encoding,
+                fewer for non-Latin scripts.
+            country: ISO 3166-1 alpha-2 country code. Default: "US"
+            state: Two-letter US state code, for example "CA". Use it only with
+                country "US". It adds 2 credits. Default: None
+            include_html: Include HTML response. Default: False
+            include_markdown: Include markdown response. Default: False
+            run_manager: The run manager for callbacks.
+            **kwargs: Additional parameters.
+
+        Returns:
+            JSON string of the response or error message.
+        """
+        include = {}
+        if include_html:
+            include["html"] = True
+        if include_markdown:
+            include["markdown"] = True
+        if state:
+            kwargs["state"] = state
+
+        params = build_monitor_params(
+            prompt=prompt,
+            country=country,
+            include=include if include else None,
+            **kwargs,
+        )
+
+        return self._make_request("/v1/monitor/bing/aimode", params)
+
+
 # Backwards compatibility aliases
 CloroSearchRun = CloroGoogleSearch
 CloroSearchResults = CloroGoogleSearch
