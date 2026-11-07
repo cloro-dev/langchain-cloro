@@ -13,6 +13,7 @@ import pytest
 from langchain_tests.unit_tests.tools import ToolsUnitTests
 
 from langchain_cloro import (
+    CloroBingAIMode,
     CloroChatGPT,
     CloroGemini,
     CloroGoogleSearch,
@@ -90,6 +91,38 @@ class TestCloroGeminiStandard(ToolsUnitTests):
     def tool_constructor(self) -> type[CloroGemini]:
         """Return the CloroGemini tool class."""
         return CloroGemini
+
+    @property
+    def tool_constructor_params(self) -> dict[str, Any]:
+        """Return parameters for tool construction."""
+        return {
+            "cloro_api_key": "test-api-key",
+        }
+
+    @property
+    def tool_invoke_params_example(self) -> dict[str, Any]:
+        """Return example parameters for tool invocation."""
+        return {"prompt": "test prompt"}
+
+    @property
+    def init_from_env_params(
+        self,
+    ) -> tuple[dict[str, str], dict[str, Any], dict[str, Any]]:
+        """Return params for environment variable initialization test."""
+        return (
+            {"CLORO_API_KEY": "env-api-key"},
+            {},
+            {"cloro_api_key": "env-api-key"},
+        )
+
+
+class TestCloroBingAIModeStandard(ToolsUnitTests):
+    """LangChain standard tests for CloroBingAIMode."""
+
+    @property
+    def tool_constructor(self) -> type[CloroBingAIMode]:
+        """Return the CloroBingAIMode tool class."""
+        return CloroBingAIMode
 
     @property
     def tool_constructor_params(self) -> dict[str, Any]:

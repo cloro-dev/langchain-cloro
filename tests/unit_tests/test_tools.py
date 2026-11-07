@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from langchain_cloro.tools import (
+    CloroBingAIMode,
     CloroChatGPT,
     CloroGemini,
     CloroGoogleSearch,
@@ -147,6 +148,57 @@ class TestCloroGemini:
         call_args = mock_client.post.call_args
         assert call_args[0][0] == "/v1/monitor/gemini"
         assert call_args[1]["json"]["prompt"] == "test prompt"
+
+
+class TestCloroBingAIMode:
+    """Test CloroBingAIMode tool."""
+
+    @patch("langchain_cloro.tools.initialize_client")
+    def test_run_success(self, mock_init: MagicMock) -> None:
+        """Test successful Bing AI Mode execution."""
+        mock_client = MagicMock()
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"success": True, "result": {"text": "A"}}
+        mock_response.raise_for_status = MagicMock()
+        mock_client.post.return_value = mock_response
+
+        mock_init.return_value = {
+            "cloro_api_key": "test-key",
+            "client": mock_client,
+        }
+
+        tool = CloroBingAIMode(cloro_api_key="test-api-key")
+        tool._run(prompt="test prompt")
+
+        call_args = mock_client.post.call_args
+        assert call_args[0][0] == "/v1/monitor/bing/aimode"
+        assert call_args[1]["json"] == {"prompt": "test prompt", "country": "US"}
+
+    @patch("langchain_cloro.tools.initialize_client")
+    def test_run_with_state_and_include(self, mock_init: MagicMock) -> None:
+        """Test Bing AI Mode with a US state and the include flags."""
+        mock_client = MagicMock()
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"success": True}
+        mock_response.raise_for_status = MagicMock()
+        mock_client.post.return_value = mock_response
+
+        mock_init.return_value = {
+            "cloro_api_key": "test-key",
+            "client": mock_client,
+        }
+
+        tool = CloroBingAIMode(cloro_api_key="test-api-key")
+        tool._run(
+            prompt="test prompt",
+            state="CA",
+            include_html=True,
+            include_markdown=True,
+        )
+
+        body = mock_client.post.call_args[1]["json"]
+        assert body["state"] == "CA"
+        assert body["include"] == {"html": True, "markdown": True}
 
 
 class TestBaseToolErrorHandling:

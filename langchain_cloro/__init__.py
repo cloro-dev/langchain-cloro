@@ -1,6 +1,7 @@
 """LangChain integration for cloro.dev API."""
 
 from langchain_cloro.tools import (
+    CloroBingAIMode,
     CloroChatGPT,
     CloroGemini,
     CloroGoogleSearch,
@@ -13,6 +14,7 @@ __all__ = [
     "CloroGoogleSearch",
     "CloroChatGPT",
     "CloroGemini",
+    "CloroBingAIMode",
     "CloroSearchRun",
     "CloroSearchResults",
     "get_countries",

@@ -1,6 +1,6 @@
 # langchain-cloro
 
-This package contains the LangChain integration for [cloro.dev](https://cloro.dev/) - a unified API for monitoring multiple AI providers including Google Search, ChatGPT, and Gemini.
+This package contains the LangChain integration for [cloro.dev](https://cloro.dev/) - a unified API for monitoring multiple AI providers including Google Search, ChatGPT, Gemini, and Bing AI Mode.
 
 ## Installation
 
@@ -111,6 +111,35 @@ results = tool.invoke({"prompt": "Explain quantum entanglement"})
 - `include_html` (bool): Include HTML response. Default: False
 - `include_markdown` (bool): Include markdown response. Default: False
 
+### CloroBingAIMode
+
+Get the answer that Bing AI Mode gives to a prompt, with its sources and inline citation pills.
+
+```python
+from langchain_cloro import CloroBingAIMode
+
+tool = CloroBingAIMode()
+
+results = tool.invoke({"prompt": "What are the best project management tools?"})
+
+# From a US state, with the answer as Markdown
+results = tool.invoke({
+    "prompt": "best pizza near me",
+    "country": "US",
+    "state": "NY",
+    "include_markdown": True
+})
+```
+
+**Parameters:**
+- `prompt` (str, required): The prompt/query. Max 3,500 characters after URL encoding (fewer for non-Latin scripts)
+- `country` (str): ISO 3166-1 alpha-2 country code. Default: "US"
+- `state` (str): Two-letter US state code. Use it only with country "US". Default: None
+- `include_html` (bool): Include HTML response. Default: False
+- `include_markdown` (bool): Include markdown response. Default: False
+
+The response `result` has `text`, `sources`, `citationPills`, and `markdown` or `html` when you ask for them. A request costs 4 credits, plus 2 for a sync request, plus 2 for a US state.
+
 ### get_countries Utility
 
 Get list of supported country codes for specific AI providers.
@@ -179,12 +208,14 @@ from langchain_cloro import (
     CloroGoogleSearch,
     CloroChatGPT,
     CloroGemini,
+    CloroBingAIMode,
 )
 
 tools = [
     CloroGoogleSearch(),  # For search queries
     CloroChatGPT(),      # For shopping/product queries
     CloroGemini(),       # For general AI queries
+    CloroBingAIMode(),   # For Bing AI answers with citations
 ]
 ```
 
@@ -196,7 +227,7 @@ Use the `get_countries()` utility to fetch supported countries:
 from langchain_cloro import get_countries
 
 # Check which countries are available for each model
-models = ["google", "chatgpt", "gemini"]
+models = ["google", "chatgpt", "gemini", "bing_aimode"]
 
 for model in models:
     countries = get_countries(model=model)
