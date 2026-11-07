@@ -22,6 +22,7 @@ import pytest
 from langchain_tests.integration_tests import ToolsIntegrationTests
 
 from langchain_cloro import (
+    CloroBingAIMode,
     CloroChatGPT,
     CloroGemini,
     CloroGoogleSearch,
@@ -92,3 +93,25 @@ class TestCloroGeminiIntegration(ToolsIntegrationTests):
     def tool_invoke_params_example(self) -> dict[str, Any]:
         """Return example parameters for tool invocation."""
         return {"prompt": "Explain quantum entanglement"}
+
+
+class TestCloroBingAIModeIntegration(ToolsIntegrationTests):
+    """LangChain integration tests for CloroBingAIMode."""
+
+    @property
+    def tool_constructor(self) -> type[CloroBingAIMode]:
+        """Return the CloroBingAIMode tool class."""
+        return CloroBingAIMode
+
+    @property
+    def tool_constructor_params(self) -> dict[str, Any]:
+        """Return parameters for tool construction.
+
+        Uses CLORO_API_KEY from environment variable.
+        """
+        return {}
+
+    @property
+    def tool_invoke_params_example(self) -> dict[str, Any]:
+        """Return example parameters for tool invocation."""
+        return {"prompt": "What are the best project management tools?"}
