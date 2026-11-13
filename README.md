@@ -159,22 +159,47 @@ google_countries = get_countries(model="google")
 
 ### With an Agent
 
+Requires `langchain` 1.0 or later and the package of your model provider, for example `pip install langchain langchain-anthropic`.
+
 ```python
-from langchain.agents import initialize_agent, AgentType
-from langchain_openai import OpenAI
+from langchain.agents import create_agent
 from langchain_cloro import CloroGoogleSearch, CloroChatGPT
 
-llm = OpenAI(temperature=0)
-tools = [CloroGoogleSearch(), CloroChatGPT()]
-
-agent = initialize_agent(
-    tools,
-    llm,
-    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-    verbose=True,
+agent = create_agent(
+    "anthropic:claude-sonnet-5-5",
+    tools=[CloroGoogleSearch(), CloroChatGPT()],
 )
 
-agent.run("What are the latest developments in AI?")
+agent.invoke({"messages": [{"role": "user", "content": "What are the latest developments in AI?"}]})
+```
+
+### Always include the AI Overview
+
+`include_aioverview` is an argument of each call, and it is off by default. When you give an agent `CloroGoogleSearch` directly, the model decides whether to ask for the AI Overview. To get it on every call, wrap the tool. The wrapper below also gives the model only the AI Overview and the result snippets, not the full JSON response:
+
+```python
+import json
+
+from langchain.agents import create_agent
+from langchain_core.tools import tool
+from langchain_cloro import CloroGoogleSearch
+
+search = CloroGoogleSearch()
+
+
+@tool
+def google_search(query: str) -> str:
+    """Search Google. Returns Google's AI Overview and the snippets of the top results."""
+    data = json.loads(search.invoke({"query": query, "include_aioverview": True, "aioverview_markdown": True}))
+    if "error" in data:
+        return data["error"]
+    result = data["result"]
+    overview = (result.get("aioverview") or {}).get("markdown", "")
+    snippets = [r.get("snippet", "") for r in result.get("organicResults", [])]
+    return "\n\n".join([overview, *snippets])
+
+
+agent = create_agent("anthropic:claude-sonnet-5-5", tools=[google_search])
 ```
 
 ### With LCEL

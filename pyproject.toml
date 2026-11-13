@@ -7,11 +7,11 @@ authors = []
 license = { text = "MIT" }
 requires-python = ">=3.10.0,<4.0.0"
 dependencies = [
-    "langchain-core>=0.1.0,<1.0.0",
+    "langchain-core>=0.1.0,<2.0.0",
     "httpx>=0.25.0,<1.0.0",
 ]
 name = "langchain-cloro"
-version = "0.5.0"
+version = "0.6.0"
 description = "An integration package connecting cloro.dev and LangChain"
 readme = "README.md"
 
