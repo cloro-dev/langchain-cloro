@@ -380,6 +380,93 @@ class CloroBingAIMode(_CloroBaseTool):
         return self._make_request("/v1/monitor/bing/aimode", params)
 
 
+class CloroBingSearch(_CloroBaseTool):
+    r"""cloro Bing Search tool.
+
+    Extracts structured data from Bing Search results: the organic results and
+    the optional AI Overview (the Bing AI summary), in the same shapes as
+    Google Search.
+
+    Setup:
+        Install ``langchain-cloro`` and set environment variable ``CLORO_API_KEY``.
+
+        .. code-block:: bash
+
+            pip install -U langchain-cloro
+            export CLORO_API_KEY="your-api-key"
+
+    Instantiation:
+        .. code-block:: python
+
+            from langchain_cloro import CloroBingSearch
+
+            tool = CloroBingSearch()
+
+    Invocation:
+        .. code-block:: python
+
+            tool.invoke({"query": "best laptops for programming"})
+
+    Include AI Overview:
+        .. code-block:: python
+
+            tool.invoke({
+                "query": "best laptops for programming",
+                "include_aioverview": True,
+                "aioverview_markdown": True,
+            })
+    """
+
+    name: str = "cloro_bing_search"
+    description: str = (
+        "A wrapper around cloro Bing Search API. "
+        "Extracts structured data from Bing Search including organic results "
+        "and optional AI Overview. "
+        "Input should be a search query. "
+        "Output is a JSON object with search results."
+    )
+
+    def _run(
+        self,
+        query: str,
+        country: str = "US",
+        include_aioverview: bool = False,
+        aioverview_markdown: bool = False,
+        include_html: bool = False,
+        run_manager: CallbackManagerForToolRun | None = None,
+        **kwargs: Any,
+    ) -> str:
+        """Use the cloro Bing Search tool.
+
+        Args:
+            query: The search query string. Max 3,500 characters after URL
+                encoding, fewer for non-Latin scripts.
+            country: ISO 3166-1 alpha-2 country code. It selects the Bing
+                market. Default: "US"
+            include_aioverview: Include the Bing AI Overview. It adds 2 credits.
+                Default: False
+            aioverview_markdown: Format AI Overview as markdown. Default: False
+            include_html: Include raw HTML response. Default: False
+            run_manager: The run manager for callbacks.
+            **kwargs: Additional parameters.
+
+        Returns:
+            JSON string of search results or error message.
+        """
+        include: dict[str, Any] = {}
+        if include_aioverview:
+            include["aioverview"] = {"markdown": aioverview_markdown}
+        if include_html:
+            include["html"] = True
+
+        params: dict[str, Any] = {"query": query, "country": country}
+        if include:
+            params["include"] = include
+        params.update(kwargs)
+
+        return self._make_request("/v1/monitor/bing", params)
+
+
 # Backwards compatibility aliases
 CloroSearchRun = CloroGoogleSearch
 CloroSearchResults = CloroGoogleSearch

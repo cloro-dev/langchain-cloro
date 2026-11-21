@@ -2,6 +2,7 @@
 
 from langchain_cloro.tools import (
     CloroBingAIMode,
+    CloroBingSearch,
     CloroChatGPT,
     CloroGemini,
     CloroGoogleSearch,
@@ -15,6 +16,7 @@ __all__ = [
     "CloroChatGPT",
     "CloroGemini",
     "CloroBingAIMode",
+    "CloroBingSearch",
     "CloroSearchRun",
     "CloroSearchResults",
     "get_countries",

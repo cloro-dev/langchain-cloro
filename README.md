@@ -1,6 +1,6 @@
 # langchain-cloro
 
-This package contains the LangChain integration for [cloro.dev](https://cloro.dev/) - a unified API for monitoring multiple AI providers including Google Search, ChatGPT, Gemini, and Bing AI Mode.
+This package contains the LangChain integration for [cloro.dev](https://cloro.dev/) - a unified API for monitoring multiple AI providers including Google Search, Bing Search, ChatGPT, Gemini, and Bing AI Mode.
 
 ## Installation
 
@@ -140,6 +140,36 @@ results = tool.invoke({
 
 The response `result` has `text`, `sources`, `citationPills`, and `markdown` or `html` when you ask for them. A request costs 4 credits, plus 2 for a sync request, plus 2 for a US state.
 
+### CloroBingSearch
+
+Get the Bing results with the AI Overview: the organic results and, when you ask for it and Bing shows one, the Bing AI summary.
+
+```python
+from langchain_cloro import CloroBingSearch
+
+tool = CloroBingSearch()
+
+# Basic search
+results = tool.invoke({"query": "best laptops for programming"})
+
+# With AI Overview
+results = tool.invoke({
+    "query": "best laptops for programming",
+    "country": "GB",
+    "include_aioverview": True,
+    "aioverview_markdown": True
+})
+```
+
+**Parameters:**
+- `query` (str, required): The search query. Max 3,500 characters after URL encoding (fewer for non-Latin scripts)
+- `country` (str): ISO 3166-1 alpha-2 country code. It selects the Bing market. Default: "US"
+- `include_aioverview` (bool): Include the Bing AI Overview. Default: False
+- `aioverview_markdown` (bool): Format AI Overview as markdown. Default: False
+- `include_html` (bool): Include raw HTML response. Default: False
+
+The response `result` has `organicResults`, `aioverview` when you ask for it and Bing shows one, and `html` when you ask for it. `organicResults` and `aioverview` have the same shape as in `CloroGoogleSearch`. Bing Search has no `device` or `pages`. A request costs 3 credits, plus 2 for a sync request, plus 2 for the AI Overview.
+
 ### get_countries Utility
 
 Get list of supported country codes for specific AI providers.
@@ -234,6 +264,7 @@ from langchain_cloro import (
     CloroChatGPT,
     CloroGemini,
     CloroBingAIMode,
+    CloroBingSearch,
 )
 
 tools = [
@@ -241,6 +272,7 @@ tools = [
     CloroChatGPT(),      # For shopping/product queries
     CloroGemini(),       # For general AI queries
     CloroBingAIMode(),   # For Bing AI answers with citations
+    CloroBingSearch(),   # For Bing search results with the AI Overview
 ]
 ```
 
@@ -252,7 +284,7 @@ Use the `get_countries()` utility to fetch supported countries:
 from langchain_cloro import get_countries
 
 # Check which countries are available for each model
-models = ["google", "chatgpt", "gemini", "bing_aimode"]
+models = ["google", "chatgpt", "gemini", "bing_aimode", "bing"]
 
 for model in models:
     countries = get_countries(model=model)

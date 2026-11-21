@@ -5,6 +5,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from langchain_cloro.tools import (
     CloroBingAIMode,
+    CloroBingSearch,
     CloroChatGPT,
     CloroGemini,
     CloroGoogleSearch,
@@ -199,6 +200,65 @@ class TestCloroBingAIMode:
         body = mock_client.post.call_args[1]["json"]
         assert body["state"] == "CA"
         assert body["include"] == {"html": True, "markdown": True}
+
+
+class TestCloroBingSearch:
+    """Test CloroBingSearch tool."""
+
+    @patch("langchain_cloro.tools.initialize_client")
+    def test_run_success(self, mock_init: MagicMock) -> None:
+        """Test successful Bing Search execution."""
+        mock_client = MagicMock()
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            "success": True,
+            "result": {"organicResults": []},
+        }
+        mock_response.raise_for_status = MagicMock()
+        mock_client.post.return_value = mock_response
+
+        mock_init.return_value = {
+            "cloro_api_key": "test-key",
+            "client": mock_client,
+        }
+
+        tool = CloroBingSearch(cloro_api_key="test-api-key")
+        tool._run(query="test query")
+
+        assert tool.name == "cloro_bing_search"
+        call_args = mock_client.post.call_args
+        assert call_args[0][0] == "/v1/monitor/bing"
+        assert call_args[1]["json"] == {"query": "test query", "country": "US"}
+
+    @patch("langchain_cloro.tools.initialize_client")
+    def test_run_with_aioverview_and_html(self, mock_init: MagicMock) -> None:
+        """Test Bing Search with the AI Overview and HTML."""
+        mock_client = MagicMock()
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"success": True}
+        mock_response.raise_for_status = MagicMock()
+        mock_client.post.return_value = mock_response
+
+        mock_init.return_value = {
+            "cloro_api_key": "test-key",
+            "client": mock_client,
+        }
+
+        tool = CloroBingSearch(cloro_api_key="test-api-key")
+        tool._run(
+            query="test query",
+            country="GB",
+            include_aioverview=True,
+            aioverview_markdown=True,
+            include_html=True,
+        )
+
+        body = mock_client.post.call_args[1]["json"]
+        assert body == {
+            "query": "test query",
+            "country": "GB",
+            "include": {"aioverview": {"markdown": True}, "html": True},
+        }
 
 
 class TestBaseToolErrorHandling:
