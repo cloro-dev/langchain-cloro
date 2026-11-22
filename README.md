@@ -168,7 +168,7 @@ results = tool.invoke({
 - `aioverview_markdown` (bool): Format AI Overview as markdown. Default: False
 - `include_html` (bool): Include raw HTML response. Default: False
 
-The response `result` has `organicResults`, `aioverview` when you ask for it and Bing shows one, and `html` when you ask for it. `organicResults` and `aioverview` have the same shape as in `CloroGoogleSearch`. Bing Search has no `device` or `pages`. A request costs 3 credits, plus 2 for a sync request, plus 2 for the AI Overview.
+The response `result` has `organicResults`, `aioverview` when you ask for it and Bing shows one, and `html` when you ask for it. `organicResults` and `aioverview` have the same shape as in `CloroGoogleSearch`. Bing Search has no `device`. The tool gets the first results page. A request costs 3 credits, plus 2 for a sync request, plus 2 for the AI Overview.
 
 ### get_countries Utility
 
