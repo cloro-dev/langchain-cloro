@@ -228,7 +228,19 @@ class TestCloroBingSearch:
         assert tool.name == "cloro_bing_search"
         call_args = mock_client.post.call_args
         assert call_args[0][0] == "/v1/monitor/bing"
-        assert call_args[1]["json"] == {"query": "test query", "country": "US"}
+        assert call_args[1]["json"] == {
+            "query": "test query",
+            "country": "US",
+            "pages": 1,
+        }
+
+        tool._run(query="test query", pages=3, first=41)
+        assert mock_client.post.call_args[1]["json"] == {
+            "query": "test query",
+            "country": "US",
+            "pages": 3,
+            "first": 41,
+        }
 
     @patch("langchain_cloro.tools.initialize_client")
     def test_run_with_aioverview_and_html(self, mock_init: MagicMock) -> None:
@@ -257,6 +269,7 @@ class TestCloroBingSearch:
         assert body == {
             "query": "test query",
             "country": "GB",
+            "pages": 1,
             "include": {"aioverview": {"markdown": True}, "html": True},
         }
 

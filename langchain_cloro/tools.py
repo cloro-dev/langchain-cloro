@@ -430,6 +430,8 @@ class CloroBingSearch(_CloroBaseTool):
         self,
         query: str,
         country: str = "US",
+        pages: int = 1,
+        first: int | None = None,
         include_aioverview: bool = False,
         aioverview_markdown: bool = False,
         include_html: bool = False,
@@ -443,6 +445,10 @@ class CloroBingSearch(_CloroBaseTool):
                 encoding, fewer for non-Latin scripts.
             country: ISO 3166-1 alpha-2 country code. It selects the Bing
                 market. Default: "US"
+            pages: Number of pages to scrape (1-10). Each page after the first
+                adds 2 credits. Default: 1
+            first: The result to start at, from 1. Bing shows no AI Overview
+                when it is more than 1. Default: None
             include_aioverview: Include the Bing AI Overview. It adds 2 credits.
                 Default: False
             aioverview_markdown: Format AI Overview as markdown. Default: False
@@ -459,7 +465,9 @@ class CloroBingSearch(_CloroBaseTool):
         if include_html:
             include["html"] = True
 
-        params: dict[str, Any] = {"query": query, "country": country}
+        params: dict[str, Any] = {"query": query, "country": country, "pages": pages}
+        if first is not None:
+            params["first"] = first
         if include:
             params["include"] = include
         params.update(kwargs)

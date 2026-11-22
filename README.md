@@ -164,11 +164,13 @@ results = tool.invoke({
 **Parameters:**
 - `query` (str, required): The search query. Max 3,500 characters after URL encoding (fewer for non-Latin scripts)
 - `country` (str): ISO 3166-1 alpha-2 country code. It selects the Bing market. Default: "US"
+- `pages` (int): Number of pages to scrape (1-10). Each page after the first adds 2 credits. Default: 1
+- `first` (int): The result to start at, from 1. Bing shows no AI Overview when it is more than 1. Default: None
 - `include_aioverview` (bool): Include the Bing AI Overview. Default: False
 - `aioverview_markdown` (bool): Format AI Overview as markdown. Default: False
 - `include_html` (bool): Include raw HTML response. Default: False
 
-The response `result` has `organicResults`, `aioverview` when you ask for it and Bing shows one, and `html` when you ask for it. `organicResults` and `aioverview` have the same shape as in `CloroGoogleSearch`. Bing Search has no `device`. The tool gets the first results page. A request costs 3 credits, plus 2 for a sync request, plus 2 for the AI Overview.
+The response `result` has `organicResults`, `ads` when the page has ads, `aioverview` when you ask for it and Bing shows one, and `html` when you ask for it. `organicResults`, `ads` and `aioverview` have the same shape as in `CloroGoogleSearch`. Bing Search has no `device`. A request costs 3 credits, plus 2 for a sync request, plus 2 for each page after the first, plus 2 for the AI Overview.
 
 ### get_countries Utility
 
