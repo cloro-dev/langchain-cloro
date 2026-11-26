@@ -1,6 +1,6 @@
 # langchain-cloro
 
-This package contains the LangChain integration for [cloro.dev](https://cloro.dev/) - a unified API for monitoring multiple AI providers including Google Search, Bing Search, ChatGPT, Gemini, and Bing AI Mode.
+This package contains the LangChain integration for [cloro](https://cloro.dev/), the API for AI answers. cloro covers eight engines: ChatGPT, Google Search, Google News, Google AI Overview, Google AI Mode, Gemini, Bing Search and Bing AI Mode (Copilot Search in Bing). This package has tools for ChatGPT, Google Search (with AI Overview), Gemini, Bing Search and Bing AI Mode.
 
 ## Installation
 
