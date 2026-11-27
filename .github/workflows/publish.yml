@@ -17,6 +17,9 @@ on:
     tags:
       - 'v*.*.*'
 
+permissions:
+  contents: read
+
 jobs:
   check:
     if: github.ref == 'refs/heads/main'
